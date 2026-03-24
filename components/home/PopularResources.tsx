@@ -1,110 +1,178 @@
 // components/home/PopularResources.tsx
-"use client";
+import Link from "next/link";
 
-import { useRef } from "react";
-import ResourceCard from "@/components/ui/ResourceCard";
-import type { Resource } from "@/types";
+interface PopularResource {
+  title: string;
+  subject: string;
+  university: string;
+  semester: string;
+  fileType: "pdf" | "pptx" | "video" | "text" | "image";
+  rating: number;
+  viewCount: string;
+  href: string;
+}
 
-const popularResources: Resource[] = [
+const popularResources: PopularResource[] = [
   {
-    title: "Data Structures Complete Notes",
-    subject: "Computer",
-    university: "Tribhuvan University - IOE",
-    semester: "III Semester",
+    title: "Introduction to C Programming - Complete Notes",
+    subject: "C Programming",
+    university: "TU",
+    semester: "1st Semester",
     fileType: "pdf",
     rating: 4.8,
-    viewCount: "2.4k",
-    href: "/universities/tu/bsc-csit/semester-3/dsa/chapter-1",
+    viewCount: "12.4k",
+    href: "/universities/tu/bsc-csit/semester-1/c-programming/chapter-1",
   },
   {
-    title: "Digital Signal Processing Slides",
-    subject: "Electronics",
-    university: "Pokhara University - SoE",
-    semester: "V Semester",
-    fileType: "pptx",
+    title: "Digital Logic - Gate Level Minimization",
+    subject: "Digital Logic",
+    university: "TU",
+    semester: "1st Semester",
+    fileType: "pdf",
+    rating: 4.6,
+    viewCount: "9.2k",
+    href: "/universities/tu/bsc-csit/semester-1/digital-logic/chapter-1",
+  },
+  {
+    title: "Calculus I - Limits and Continuity",
+    subject: "Mathematics I",
+    university: "TU",
+    semester: "1st Semester",
+    fileType: "pdf",
     rating: 4.5,
-    viewCount: "1.8k",
-    href: "/universities/pu/be-electronics/semester-5/dsp/chapter-1",
+    viewCount: "8.7k",
+    href: "/universities/tu/bsc-csit/semester-1/mathematics-i/chapter-1",
   },
   {
-    title: "Structural Analysis Video Series",
-    subject: "Civil",
-    university: "Kathmandu University",
-    semester: "IV Semester",
+    title: "Physics - Oscillation and Waves Lab Report",
+    subject: "Physics",
+    university: "TU",
+    semester: "1st Semester",
+    fileType: "pdf",
+    rating: 4.3,
+    viewCount: "6.1k",
+    href: "/universities/tu/bsc-csit/semester-1/physics/chapter-1",
+  },
+  {
+    title: "OOP in Java - Inheritance & Polymorphism",
+    subject: "OOP",
+    university: "TU",
+    semester: "3rd Semester",
+    fileType: "pptx",
+    rating: 4.7,
+    viewCount: "7.8k",
+    href: "/universities/tu/bsc-csit/semester-3/oop/chapter-1",
+  },
+  {
+    title: "Data Structures - Linked List Implementation",
+    subject: "DSA",
+    university: "TU",
+    semester: "3rd Semester",
     fileType: "video",
     rating: 4.9,
-    viewCount: "5.1k",
-    href: "/universities/ku/be-civil/semester-4/structural-analysis/chapter-1",
-  },
-  {
-    title: "Database Management System Notes",
-    subject: "CSIT",
-    university: "Tribhuvan University",
-    semester: "IV Semester",
-    fileType: "pdf",
-    rating: 4.7,
-    viewCount: "3.2k",
-    href: "/universities/tu/bsc-csit/semester-4/dbms/chapter-1",
-  },
-  {
-    title: "Thermodynamics Cheatsheet",
-    subject: "Mechanical",
-    university: "Purbanchal University",
-    semester: "II Semester",
-    fileType: "image",
-    rating: 4.6,
-    viewCount: "1.5k",
-    href: "/universities/pou/be-mechanical/semester-2/thermodynamics/chapter-1",
+    viewCount: "15.3k",
+    href: "/universities/tu/bsc-csit/semester-3/dsa/chapter-1",
   },
 ];
 
-export default function PopularResources() {
-  const scrollRef = useRef<HTMLDivElement>(null);
+const fileTypeConfig = {
+  pdf: { icon: "picture_as_pdf", color: "text-red-600", bg: "bg-red-50" },
+  pptx: { icon: "slideshow", color: "text-orange-600", bg: "bg-orange-50" },
+  video: { icon: "play_circle", color: "text-blue-600", bg: "bg-blue-50" },
+  text: { icon: "description", color: "text-green-600", bg: "bg-green-50" },
+  image: { icon: "image", color: "text-purple-600", bg: "bg-purple-50" },
+};
 
-  const scroll = (direction: "left" | "right") => {
-    if (!scrollRef.current) return;
-    const amount = 340;
-    scrollRef.current.scrollBy({
-      left: direction === "left" ? -amount : amount,
-      behavior: "smooth",
-    });
-  };
+function PopularResourceCard({
+  title,
+  subject,
+  university,
+  semester,
+  fileType,
+  rating,
+  viewCount,
+  href,
+}: PopularResource) {
+  const config = fileTypeConfig[fileType];
 
   return (
-    <section className="py-24 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Header with scroll buttons */}
-        <div className="flex justify-between items-center mb-12">
-          <h2 className="text-3xl font-bold font-headline text-primary">
-            Popular Resources
-          </h2>
-          <div className="flex gap-2">
-            <button
-              onClick={() => scroll("left")}
-              aria-label="Scroll left"
-              className="w-10 h-10 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center text-outline hover:text-primary hover:bg-white transition-all"
-            >
-              <span className="material-symbols-outlined">chevron_left</span>
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              aria-label="Scroll right"
-              className="w-10 h-10 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center text-outline hover:text-primary hover:bg-white transition-all"
-            >
-              <span className="material-symbols-outlined">chevron_right</span>
-            </button>
+    <Link href={href} className="block group">
+      <div className="p-5 bg-surface-container-lowest rounded-xl border border-outline-variant/10 hover:shadow-md hover:border-primary/20 transition-all duration-200">
+        <div className="flex items-start gap-4">
+          {/* File Icon */}
+          <div
+            className={`w-12 h-12 ${config.bg} rounded-xl flex items-center justify-center flex-shrink-0`}
+          >
+            <span className={`material-symbols-outlined ${config.color}`}>
+              {config.icon}
+            </span>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            <h4 className="font-headline text-sm font-bold text-on-surface group-hover:text-primary transition-colors line-clamp-2">
+              {title}
+            </h4>
+            <div className="flex items-center gap-2 mt-2 flex-wrap">
+              <span className="font-headline text-[10px] font-bold uppercase tracking-wider text-tertiary bg-tertiary-fixed/30 px-2 py-0.5 rounded-md">
+                {university}
+              </span>
+              <span className="font-headline text-[10px] text-outline">
+                {subject}
+              </span>
+              <span className="font-headline text-[10px] text-outline">
+                {semester}
+              </span>
+            </div>
+            <div className="flex items-center gap-3 mt-2">
+              <div className="flex items-center gap-1">
+                <span className="material-symbols-outlined text-amber-500 text-sm">
+                  star
+                </span>
+                <span className="font-headline text-xs font-bold text-on-surface">
+                  {rating}
+                </span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="material-symbols-outlined text-outline text-sm">
+                  visibility
+                </span>
+                <span className="font-headline text-xs text-outline">
+                  {viewCount}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+    </Link>
+  );
+}
 
-        {/* Scrollable container */}
-        <div
-          ref={scrollRef}
-          className="flex gap-6 overflow-x-auto pb-8 no-scrollbar scroll-smooth"
-        >
-          {popularResources.map((resource, index) => (
-            <ResourceCard key={index} {...resource} />
-          ))}
+export default function PopularResources() {
+  return (
+    <section className="max-w-7xl mx-auto px-8 py-20">
+      <div className="flex items-center justify-between mb-10">
+        <div>
+          <span className="font-headline text-xs font-bold uppercase tracking-[0.3em] text-tertiary block mb-2">
+            Trending
+          </span>
+          <h2 className="font-headline text-3xl font-extrabold text-on-surface">
+            Popular Resources
+          </h2>
         </div>
+        <Link
+          href="/universities"
+          className="font-headline text-xs font-bold uppercase tracking-widest text-primary hover:text-primary-container transition-colors"
+        >
+          Browse All
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {popularResources.map((resource, index) => (
+          <PopularResourceCard key={index} {...resource} />
+        ))}
       </div>
     </section>
   );

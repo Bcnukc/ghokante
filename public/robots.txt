@@ -1,0 +1,13 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /profile
+Disallow: /admin
+Disallow: /upload
+
+# Host
+Host: https://ghokante.com
+
+# Sitemaps
+Sitemap: https://ghokante.com/sitemap.xml
+Sitemap: https://ghokante.com/server-sitemap.xml
